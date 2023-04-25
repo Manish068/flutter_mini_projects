@@ -3,32 +3,23 @@ import 'package:flutter/material.dart';
 class ExpandableListItemApp extends StatelessWidget {
   const ExpandableListItemApp({Key? key}) : super(key: key);
 
-   @override
+  @override
   Widget build(BuildContext context) {
     return MaterialApp(
       title: 'Flutter Demo',
       theme: ThemeData(
-        // This is the theme of your application.
-        //
-        // Try running your application with "flutter run". You'll see the
-        // application has a blue toolbar. Then, without quitting the app, try
-        // changing the primarySwatch below to Colors.green and then invoke
-        // "hot reload" (press "r" in the console where you ran "flutter run",
-        // or simply save your changes to "hot reload" in a Flutter IDE).
-        // Notice that the counter didn't reset back to zero; the application
-        // is not restarted.
+
         primarySwatch: Colors.blue,
       ),
       home: Scaffold(
         appBar: AppBar(
-          title: Text("Infinite List View"),
+          title: Text("Expandable List App"),
         ),
         body: const ExpandableListItem(),
       ),
     );
   }
 }
-
 
 class ExpandableListItem extends StatefulWidget {
   const ExpandableListItem({Key? key}) : super(key: key);
@@ -38,8 +29,45 @@ class ExpandableListItem extends StatefulWidget {
 }
 
 class _ExpandableListItemState extends State<ExpandableListItem> {
+  final basicTile = <BasicTile>[
+    BasicTile(title: "Fruits", tileList: [
+      BasicTile(title: "Apple"),
+      BasicTile(title: "Orange"),
+      BasicTile(title: "Papaya"),
+      BasicTile(title: "Mango"),
+    ]),
+    BasicTile(title: "Country", tileList: [
+      BasicTile(title: "India"),
+      BasicTile(title: "America"),
+      BasicTile(title: "Sri Lanka"),
+      BasicTile(title: "Pakistan"),
+    ]),
+    BasicTile(title: "Car Brand", tileList: [
+      BasicTile(title: "Toyota"),
+      BasicTile(title: "Hyundai"),
+      BasicTile(title: "MarutiSuzuki"),
+      BasicTile(title: "Porche"),
+    ])
+  ];
+
   @override
   Widget build(BuildContext context) {
-    return const Placeholder();
+    return ListView(
+      children: basicTile.map(buildTile).toList(),
+    );
   }
+
+  Widget buildTile(BasicTile tile) {
+    return ExpansionTile(
+      title: Text(tile.title),
+      children: tile.tileList.map((tile) => buildTile(tile)).toList(),
+    );
+  }
+}
+
+class BasicTile {
+  final String title;
+  final List<BasicTile> tileList;
+
+  BasicTile({required this.title, this.tileList = const []});
 }
